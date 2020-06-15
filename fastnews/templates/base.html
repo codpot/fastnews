@@ -1,0 +1,143 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">패스트뉴스</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <form method="get" action="/search/" class="w-100">
+        <input class="form-control form-control-dark" type="text" name="q" placeholder="검색어 입력">
+    </form>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/register">회원가입</a>
+        </li>
+    </ul>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/login">로그인</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list" %} active{% endif %}" href="/">
+                            <span data-feather="home"></span>
+                            뉴스홈
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list_politics" %} active{% endif %}" href="/politics/">
+                            <span data-feather="tv"></span>
+                            정치
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list_economy" %} active{% endif %}" href="/economy/">
+                            <span data-feather="bar-chart"></span>
+                            경제
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list_social" %} active{% endif %}" href="/social/">
+                            <span data-feather="users"></span>
+                            사회
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list_life" %} active{% endif %}" href="/life/">
+                            <span data-feather="activity"></span>
+                            생활/문화
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list_world" %} active{% endif %}" href="/world/">
+                            <span data-feather="globe"></span>
+                            세계
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "news_list_it" %} active{% endif %}" href="/it/">
+                            <span data-feather="compass"></span>
+                            IT/과학
+                        </a>
+                    </li>
+                </ul>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>토론방</span>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "debates_list" %} active{% endif %}" href="/debates/">
+                            <span data-feather="file-text"></span>
+                            전체 토론방
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "debates_list_recent" %} active{% endif %}" href="/debates/recent/">
+                            <span data-feather="mic"></span>
+                            최근 토론
+                        </a>
+                    </li>
+                </ul>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>마이페이지</span>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "notifications_list" %} active{% endif %}" href="/notifications/">
+                            <span data-feather="bell"></span>
+                            알림
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "likes_list" %} active{% endif %}" href="/likes/">
+                            <span data-feather="thumbs-up"></span>
+                            공감 목록
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "write" %} active{% endif %}" href="/write/">
+                            <span data-feather="edit-3"></span>
+                            기사 작성
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "settlement_list" %} active{% endif %}" href="/settlement/">
+                            <span data-feather="dollar-sign"></span>
+                            수익 정산
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if request.resolver_match.url_name == "myaccount" %} active{% endif %}" href="/myaccount/">
+                            <span data-feather="user"></span>
+                            개인정보 수정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</div>
+<script src="{% static "js/jquery-3.5.1.slim.min.js" %}"></script>
+<script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "js/feather.min.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+</body>
+</html>
