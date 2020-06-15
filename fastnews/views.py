@@ -1,57 +1,71 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def news_list(request, category):
-    return HttpResponse('News')
+    context = {}
+    return render(request, 'news_list.html', context)
 
 
 def news_detail(request, id):
-    return HttpResponse('News')
+    context = {}
+    return render(request, 'news_detail.html', context)
+
+
+def search(request):
+    context = {}
+    return render(request, 'search.html', context)
 
 
 def debates_list(request):
-    return HttpResponse('Debates')
+    context = {}
+    return render(request, 'debates_list.html', context)
 
 
 def debates_detail(request, id):
-    return HttpResponse('Debates')
+    context = {}
+    return render(request, 'debates_list.html', context)
 
 
 def notifications_list(request):
-    return HttpResponse('Notifications')
+    context = {}
+    return render(request, 'notifications_list.html', context)
 
 
 def notifications_detail(request, id):
-    return HttpResponse('Notifications')
+    context = {}
+    return render(request, 'notifications_detail.html', context)
 
 
 def likes_list(request):
-    return HttpResponse('Likes')
-
-
-def likes_detail(request, id):
-    return HttpResponse('Likes')
+    context = {}
+    return render(request, 'likes_list.html', context)
 
 
 def write(request):
-    return HttpResponse('Write')
+    context = {}
+    return render(request, 'write.html', context)
 
 
 def settlement_list(request):
-    return HttpResponse('Settlement')
+    context = {}
+    return render(request, 'settlement_list.html', context)
 
 
 def settlement_detail(request, id):
-    return HttpResponse('Settlement')
+    context = {}
+    return render(request, 'settlement_detail.html', context)
 
 
 def login(request):
-    return HttpResponse('Login')
+    context = {}
+    return render(request, 'login.html', context)
 
 
 def register(request):
-    return HttpResponse('Register')
+    context = {}
+    return render(request, 'register.html', context)
 
 
 def myaccount(request):
-    return HttpResponse('My Account')
+    context = {}
+    return render(request, 'myaccount.html', context)
