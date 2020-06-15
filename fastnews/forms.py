@@ -1,6 +1,10 @@
 from django import forms
 
 
+class WriteComment(forms.Form):
+    content = forms.CharField()
+
+
 class WriteDebateForm(forms.Form):
     debate_name = forms.CharField()
 

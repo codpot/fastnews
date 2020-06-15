@@ -11,8 +11,6 @@ urlpatterns = [
     url(r'^it/$', views.news_list, {'category': 'it'}, name='news_list_it'),
     url(r'^news/(?P<id>[0-9]+)$', views.news_detail, name='news_detail'),
 
-    url(r'^search/$', views.search, name='search'),
-
     url(r'^debates/$', views.debates_list, name='debates_list'),
     url(r'^debates/recent/$', views.debates_recent, name='debates_recent'),
     url(r'^debates/(?P<id>[0-9]+)$', views.debates_detail, name='debates_detail'),

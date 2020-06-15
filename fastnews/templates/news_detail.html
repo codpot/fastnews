@@ -1,7 +1,49 @@
 {% extends "base.html" %}
 
-{% block title %}패스트뉴스{% endblock %}
+{% block title %}{{ news.title }} - 패스트뉴스{% endblock %}
 
 {% block content %}
-Hello World!
+<button type="button" class="btn btn-secondary btn-sm" onclick="history.go(-1);" style="margin-top: 1.5rem;">뒤로 가기</button>
+<div class="card" style="margin-top: 1.0rem;">
+    <div class="card-body">
+        <h4><span class="badge badge-dark">
+            {% if news.category == 'PO' %}
+                정치
+            {% elif news.category == 'EC' %}
+                경제
+            {% elif news.category == 'SO' %}
+                사회
+            {% elif news.category == 'LI' %}
+                생활/문화
+            {% elif news.category == 'WO' %}
+                세계
+            {% elif news.category == 'IT' %}
+                IT/과학
+            {% endif %}
+        </span></h4>
+        <h2 class="card-title">{{ news.title }}</h2>
+        <small class="form-text text-muted">작성자 : {{ news.reporter.nickname }} / 조회수 : {{ news.views }} / 작성일 : {{ news.created_at|date:'Y-m-d H:i:s' }}</small>
+        <p class="card-text" style="margin-top: 1rem;">{{ news.content|linebreaksbr }}</p>
+    </div>
+</div>
+<div class="card" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ debate.name }}</h5>
+        {% if request.session.user_id %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" class="form-control" name="content">
+            </form>
+        {% endif %}
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for comment in comments %}
+        <li class="list-group-item" id="{{comment.id}}">
+            {{ comment.created_at|date:'Y-m-d H:i:s' }}
+            <a href="#{{comment.id}}">@{{comment.user.nickname}}</a>
+            {{ comment.content}}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

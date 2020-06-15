@@ -10,6 +10,9 @@ class Article(models.Model):
     views = models.IntegerField()
     created_at = models.DateTimeField()
 
+    def __str__(self):
+        return '%s_%s' % (self.id, self.title)
+
 
 class Comment(models.Model):
     debate = models.ForeignKey('Debate', models.DO_NOTHING)
@@ -17,12 +20,18 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField()
 
+    def __str__(self):
+        return '%s_%s' % (self.id, self.content)
+
 
 class Debate(models.Model):
     name = models.CharField(max_length=50)
     comment_cnt = models.IntegerField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+
+    def __str__(self):
+        return '%s_%s' % (self.id, self.name)
 
 
 class Settlement(models.Model):
@@ -34,6 +43,9 @@ class Settlement(models.Model):
     account_number = models.CharField(max_length=20, blank=True, null=True)
     real_name = models.CharField(max_length=7, blank=True, null=True)
 
+    def __str__(self):
+        return '%s_%s_%s' % (self.id, self.amount, self.user)
+
 
 class User(models.Model):
     email = models.CharField(max_length=255)
@@ -41,3 +53,6 @@ class User(models.Model):
     nickname = models.CharField(max_length=10)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+
+    def __str__(self):
+        return '%s_%s' % (self.id, self.email)

@@ -7,33 +7,97 @@ from . import forms
 
 
 def news_list(request, category):
-    context = {}
+    news = Article.objects.select_related('reporter')
+    if category == 'politics':
+        news = news.filter(category='PO')
+    elif category == 'economy':
+        news = news.filter(category='EC')
+    elif category == 'social':
+        news = news.filter(category='SO')
+    elif category == 'life':
+        news = news.filter(category='LI')
+    elif category == 'world':
+        news = news.filter(category='WO')
+    elif category == 'it':
+        news = news.filter(category='IT')
+    news = news.order_by('-created_at')
+    context = {
+        'news': news
+    }
     return render(request, 'news_list.html', context)
 
 
 def news_detail(request, id):
-    context = {}
+    news = Article.objects.select_related('reporter', 'debate').filter(id=id).first()
+    if news is None:
+        return render(request, 'alert.html', {'msg': '잘못된 뉴스입니다.'})
+    news.views += 1
+    news.save()
+    if request.method == 'POST':
+        form = forms.WriteComment(request.POST)
+        if form.is_valid():
+            if not 'user_id' in request.session:
+                return render(request, 'alert.html', {'msg': '로그인이 필요합니다.'})
+            Comment.objects.create(
+                content=form.cleaned_data['content'],
+                created_at=timezone.now(),
+                debate_id=news.debate.id,
+                user_id=request.session['user_id'],
+            )
+            news.debate.comment_cnt += 1
+            news.debate.updated_at = timezone.now()
+            news.debate.save()
+    comments = Comment.objects.select_related('user').filter(debate_id=news.debate_id).order_by('-created_at')
+    context = {
+        'news': news,
+        'debate': news.debate,
+        'comments': comments,
+    }
     return render(request, 'news_detail.html', context)
 
 
-def search(request):
-    context = {}
-    return render(request, 'search.html', context)
-
-
 def debates_list(request):
-    context = {}
+    debate = Debate.objects.exclude(comment_cnt=0).order_by('-updated_at')
+    if debate is None:
+        return render(request, 'alert.html', {'msg': '잘못된 토론주제입니다.'})
+    context = {
+        'debates': debate
+    }
     return render(request, 'debates_list.html', context)
 
 
 def debates_recent(request):
-    context = {}
+    comments = Comment.objects.select_related('debate').select_related('user').order_by('-created_at')
+    context = {
+        'comments': comments,
+    }
     return render(request, 'debates_recent.html', context)
 
 
 def debates_detail(request, id):
-    context = {}
-    return render(request, 'debates_list.html', context)
+    debate = Debate.objects.filter(id=id).first()
+    if debate is None:
+        return render(request, 'alert.html', {'msg': '잘못된 토론입니다.'})
+    if request.method == 'POST':
+        form = forms.WriteComment(request.POST)
+        if form.is_valid():
+            if not 'user_id' in request.session:
+                return render(request, 'alert.html', {'msg': '로그인이 필요합니다.'})
+            Comment.objects.create(
+                content=form.cleaned_data['content'],
+                created_at=timezone.now(),
+                debate_id=id,
+                user_id=request.session['user_id'],
+            )
+            debate.comment_cnt += 1
+            debate.updated_at = timezone.now()
+            debate.save()
+    comments = Comment.objects.select_related('user').filter(debate_id=id).order_by('-created_at')
+    context = {
+        'debate': debate,
+        'comments': comments
+    }
+    return render(request, 'debates_detail.html', context)
 
 
 def write(request):

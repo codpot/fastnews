@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}패스트뉴스{% endblock %}
+{% block title %}{{ debate.name }} - 토론 - 패스트뉴스{% endblock %}
 
 {% block content %}
-Hello World!
+<div class="card" style="margin-top: 1.5rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ debate.name }}</h5>
+        {% if request.session.user_id %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" class="form-control" name="content" autofocus>
+            </form>
+        {% endif %}
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for comment in comments %}
+            <li class="list-group-item" id="{{comment.id}}">
+                {{ comment.created_at|date:'Y-m-d H:i:s' }}
+                <a href="#{{comment.id}}">@{{comment.user.nickname}}</a>
+                {{ comment.content }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
