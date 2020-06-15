@@ -53,13 +53,44 @@ def write(request):
 
 
 def settlement_list(request):
-    context = {}
+    if not 'user_id' in request.session:
+        return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
+    if request.method == 'POST':
+        form = forms.SettlementForm(request.POST)
+        if form.is_valid():
+            Settlement.objects.filter(user__id=request.session['user_id'], received_at__isnull=True) \
+                .update(bank_code=form.cleaned_data['bank_code'],
+                        account_number=form.cleaned_data['account_number'],
+                        real_name=form.cleaned_data['real_name'])
+            return render(request, 'alert.html', {'msg': '수취인 정보가 정상적으로 등록되었습니다.'})
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    settlement = Settlement.objects.filter(user__id=request.session['user_id']).order_by('-id')
+    context = {
+        'settlement': settlement
+    }
     return render(request, 'settlement_list.html', context)
 
 
-def settlement_detail(request, id):
-    context = {}
-    return render(request, 'settlement_detail.html', context)
+def myaccount(request):
+    if not 'user_id' in request.session:
+        return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
+    if request.method == 'POST':
+        form = forms.MyAccountForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=request.session['user_id'])
+            if check_password(form.cleaned_data['now_password'], user.password) is False:
+                return render(request, 'alert.html', {'msg': '현재 비밀번호가 올바르지 않습니다.'})
+            if form.cleaned_data['new_password'] != '':
+                user.password = make_password(form.cleaned_data['new_password'])
+            user.nickname = form.cleaned_data['nickname']
+            user.save()
+            request.session['user_nickname'] = form.cleaned_data['nickname']
+            return render(request, 'alert.html', {'msg': '성공적으로 수정되었습니다.'})
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    context = {
+        'nickname': request.session['user_nickname']
+    }
+    return render(request, 'myaccount.html', context)
 
 
 def login(request):
@@ -101,25 +132,3 @@ def register(request):
             return render(request, 'alert.html', {'msg': '성공적으로 가입되었습니다.', 'location': '/login/'})
         return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
     return render(request, 'register.html')
-
-
-def myaccount(request):
-    if not 'user_id' in request.session:
-        return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
-    if request.method == 'POST':
-        form = forms.MyAccountForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(id=request.session['user_id'])
-            if check_password(form.cleaned_data['now_password'], user.password) is False:
-                return render(request, 'alert.html', {'msg': '현재 비밀번호가 올바르지 않습니다.'})
-            if form.cleaned_data['new_password'] != '':
-                user.password = make_password(form.cleaned_data['new_password'])
-            user.nickname = form.cleaned_data['nickname']
-            user.save()
-            request.session['user_nickname'] = form.cleaned_data['nickname']
-            return render(request, 'alert.html', {'msg': '성공적으로 수정되었습니다.'})
-        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
-    context = {
-        'nickname': request.session['user_nickname']
-    }
-    return render(request, 'myaccount.html', context)

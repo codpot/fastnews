@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'fastnews.khunet.net']
 
 INSTALLED_APPS = [
     'fastnews.apps.FastnewsConfig',
+    'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

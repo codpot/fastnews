@@ -20,12 +20,10 @@ urlpatterns = [
     url(r'^notifications/$', views.notifications_list, name='notifications_list'),
     url(r'^likes/$', views.likes_list, name='likes_list'),
     url(r'^write/$', views.write, name='write'),
-
     url(r'^settlement/$', views.settlement_list, name='settlement_list'),
-    url(r'^settlement/(?P<id>[0-9]+)$', views.settlement_detail, name='settlement_detail'),
+    url(r'^myaccount/$', views.myaccount, name='myaccount'),
 
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^register/$', views.register, name='register'),
-    url(r'^myaccount/$', views.myaccount, name='myaccount'),
 ]
