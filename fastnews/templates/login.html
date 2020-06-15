@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="{% static "css/login.css" %}">
 </head>
 <body class="text-center">
-<form class="form-signin">
+<form class="form-signin" action="/login/" method="post">
     <h1 class="h3 mb-3 font-weight-normal">패스트뉴스 로그인</h1>
-    <input type="email" class="form-control top" placeholder="이메일 주소" required autofocus>
-    <input type="password" class="form-control bot" placeholder="비밀번호" required>
+    {% csrf_token %}
+    <input type="email" class="form-control top" name="email" placeholder="이메일 주소" required autofocus>
+    <input type="password" class="form-control bot" name="password" placeholder="비밀번호" required>
     <button type="submit" class="btn btn-lg btn-primary btn-block">로그인</button>
     <a href="/" class="btn btn-success btn-sm btn-block">메인으로 돌아가기</a>
 </form>

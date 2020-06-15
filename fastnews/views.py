@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password, check_password
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from .models import Article, ArticleLike, Attachment, \
@@ -62,8 +63,18 @@ def settlement_detail(request, id):
 
 
 def login(request):
-    context = {}
-    return render(request, 'login.html', context)
+    if request.method == 'POST':
+        form = forms.LoginForm(request.POST)
+        if form.is_valid():
+            user = User.objects.filter(email=form.cleaned_data['email'])
+            if len(user) != 1:
+                return render(request, 'alert.html', {'msg': '이메일 주소 혹은 비밀번호가 일치하지 않습니다.'})
+            if check_password(form.cleaned_data['password'], user[0].password) is False:
+                return render(request, 'alert.html', {'msg': '이메일 주소 혹은 비밀번호가 일치하지 않습니다.'})
+            request.session['user_id'] = user[0].id
+            return HttpResponseRedirect('/')
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    return render(request, 'login.html')
 
 
 def register(request):
