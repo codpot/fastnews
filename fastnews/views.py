@@ -48,7 +48,26 @@ def likes_list(request):
 
 
 def write(request):
-    context = {}
+    if not 'user_id' in request.session:
+        return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
+    if request.method == 'POST':
+        form = forms.WriteDebateForm(request.POST)
+        if form.is_valid():
+            is_exists = Debate.objects.filter(name=form.cleaned_data['debate_name'])
+            if len(is_exists) != 0:
+                return render(request, 'alert.html', {'msg': '이미 존재하는 주제입니다.'})
+            Debate.objects.create(
+                name=form.cleaned_data['debate_name'],
+                comment_cnt=0,
+                created_at=timezone.now(),
+                updated_at=timezone.now(),
+            )
+            return render(request, 'alert.html', {'msg': '토론 주제가 정상적으로 생성되었습니다.'})
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    debate = Debate.objects.all().order_by('-updated_at')
+    context = {
+        'debates': debate
+    }
     return render(request, 'write.html', context)
 
 

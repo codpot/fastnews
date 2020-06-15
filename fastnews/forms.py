@@ -1,6 +1,10 @@
 from django import forms
 
 
+class WriteDebateForm(forms.Form):
+    debate_name = forms.CharField()
+
+
 class SettlementForm(forms.Form):
     bank_code = forms.CharField()
     account_number = forms.CharField()
