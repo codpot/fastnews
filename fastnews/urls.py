@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^settlement/(?P<id>[0-9]+)$', views.settlement_detail, name='settlement_detail'),
 
     url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
     url(r'^register/$', views.register, name='register'),
     url(r'^myaccount/$', views.myaccount, name='myaccount'),
 ]

@@ -77,6 +77,11 @@ def login(request):
     return render(request, 'login.html')
 
 
+def logout(request):
+    del request.session['user_id']
+    return HttpResponseRedirect('/')
+
+
 def register(request):
     if request.method == 'POST':
         form = forms.RegisterForm(request.POST)
