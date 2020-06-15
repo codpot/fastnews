@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}패스트뉴스{% endblock %}
+{% block title %}개인정보 수정 - 패스트뉴스{% endblock %}
 
 {% block content %}
-Hello World!
+<form action="/myaccount/" method="post" style="margin-top: 1.5rem;">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="iNowPassword">현재 비밀번호</label>
+        <input type="password" class="form-control" name="now_password" id="iNowPassword" required>
+    </div>
+    <div class="form-group">
+        <label for="iNewPassword">신규 비밀번호</label>
+        <input type="password" class="form-control" name="new_password" id="iNewPassword">
+        <small class="form-text text-muted">변경하실 경우에만 입력해주세요.</small>
+    </div>
+    <div class="form-group">
+        <label for="iNickname">닉네임</label>
+        <input type="text" class="form-control" name="nickname" id="iNickname" value="{{ nickname }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">수정</button>
+</form>
 {% endblock %}

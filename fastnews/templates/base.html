@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
+    <meta name="robots" content="noindex, nofollow">
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
@@ -17,16 +18,24 @@
     <form method="get" action="/search/" class="w-100">
         <input class="form-control form-control-dark" type="text" name="q" placeholder="검색어 입력">
     </form>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/register">회원가입</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/login">로그인</a>
-        </li>
-    </ul>
+    {% if request.session.user_id %}
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="/logout/">로그아웃</a>
+            </li>
+        </ul>
+    {% else %}
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="/register/">회원가입</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="/login/">로그인</a>
+            </li>
+        </ul>
+    {% endif %}
 </nav>
 <div class="container-fluid">
     <div class="row">
@@ -93,41 +102,43 @@
                         </a>
                     </li>
                 </ul>
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>마이페이지</span>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link{% if request.resolver_match.url_name == "notifications_list" %} active{% endif %}" href="/notifications/">
+                {% if request.session.user_id %}
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>마이페이지</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == "notifications_list" %} active{% endif %}" href="/notifications/">
                             <span data-feather="bell"></span>
                             알림
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if request.resolver_match.url_name == "likes_list" %} active{% endif %}" href="/likes/">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == "likes_list" %} active{% endif %}" href="/likes/">
                             <span data-feather="thumbs-up"></span>
                             공감 목록
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if request.resolver_match.url_name == "write" %} active{% endif %}" href="/write/">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == "write" %} active{% endif %}" href="/write/">
                             <span data-feather="edit-3"></span>
                             기사 작성
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if request.resolver_match.url_name == "settlement_list" %} active{% endif %}" href="/settlement/">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == "settlement_list" %} active{% endif %}" href="/settlement/">
                             <span data-feather="dollar-sign"></span>
                             수익 정산
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if request.resolver_match.url_name == "myaccount" %} active{% endif %}" href="/myaccount/">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{% if request.resolver_match.url_name == "myaccount" %} active{% endif %}" href="/myaccount/">
                             <span data-feather="user"></span>
                             개인정보 수정
-                        </a>
-                    </li>
-                </ul>
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">

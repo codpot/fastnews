@@ -72,6 +72,7 @@ def login(request):
             if check_password(form.cleaned_data['password'], user[0].password) is False:
                 return render(request, 'alert.html', {'msg': '이메일 주소 혹은 비밀번호가 일치하지 않습니다.'})
             request.session['user_id'] = user[0].id
+            request.session['user_nickname'] = user[0].nickname
             return HttpResponseRedirect('/')
         return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
     return render(request, 'login.html')
@@ -79,6 +80,7 @@ def login(request):
 
 def logout(request):
     del request.session['user_id']
+    del request.session['user_nickname']
     return HttpResponseRedirect('/')
 
 
@@ -102,5 +104,22 @@ def register(request):
 
 
 def myaccount(request):
-    context = {}
+    if not 'user_id' in request.session:
+        return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
+    if request.method == 'POST':
+        form = forms.MyAccountForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(id=request.session['user_id'])
+            if check_password(form.cleaned_data['now_password'], user.password) is False:
+                return render(request, 'alert.html', {'msg': '현재 비밀번호가 올바르지 않습니다.'})
+            if form.cleaned_data['new_password'] != '':
+                user.password = make_password(form.cleaned_data['new_password'])
+            user.nickname = form.cleaned_data['nickname']
+            user.save()
+            request.session['user_nickname'] = form.cleaned_data['nickname']
+            return render(request, 'alert.html', {'msg': '성공적으로 수정되었습니다.'})
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    context = {
+        'nickname': request.session['user_nickname']
+    }
     return render(request, 'myaccount.html', context)
