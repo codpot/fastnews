@@ -1,4 +1,9 @@
+from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Article, ArticleLike, Attachment, \
+    Comment, CommentLike, Debate, Notification, Settlement, User, UserSubscribe
+from . import forms
 
 
 def news_list(request, category):
@@ -62,8 +67,22 @@ def login(request):
 
 
 def register(request):
-    context = {}
-    return render(request, 'register.html', context)
+    if request.method == 'POST':
+        form = forms.RegisterForm(request.POST)
+        if form.is_valid():
+            is_exists = User.objects.filter(email=form.cleaned_data['email'])
+            if len(is_exists) != 0:
+                return render(request, 'alert.html', {'msg': '이미 사용중인 이메일 주소 입니다.'})
+            User.objects.create(
+                email=form.cleaned_data['email'],
+                password=make_password(form.cleaned_data['password']),
+                nickname=form.cleaned_data['nickname'],
+                created_at=timezone.now(),
+                updated_at=timezone.now(),
+            )
+            return render(request, 'alert.html', {'msg': '성공적으로 가입되었습니다.', 'location': '/login/'})
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    return render(request, 'register.html')
 
 
 def myaccount(request):

@@ -70,7 +70,7 @@ class Settlement(models.Model):
 
 class User(models.Model):
     email = models.CharField(max_length=255)
-    password = models.CharField(max_length=60)
+    password = models.CharField(max_length=77)
     nickname = models.CharField(max_length=10)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()

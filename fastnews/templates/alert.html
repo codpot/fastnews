@@ -1,0 +1,8 @@
+<script>
+  alert('{{ msg }}');
+  {% if location %}
+  location.href='{{ location }}';
+  {% else %}
+  history.go(-1);
+  {% endif %}
+</script>

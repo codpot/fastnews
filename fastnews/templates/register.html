@@ -9,13 +9,15 @@
     <link rel="stylesheet" href="{% static "css/login.css" %}">
 </head>
 <body class="text-center">
-<form class="form-signin">
+<form class="form-signin" action="/register/" method="post">
     <h1 class="h3 mb-3 font-weight-normal">패스트뉴스 회원가입</h1>
-    <input type="email" class="form-control top" placeholder="이메일 주소" required autofocus>
-    <input type="password" class="form-control mid" placeholder="비밀번호" required>
-    <input type="password" class="form-control mid" placeholder="비밀번호 확인" required>
-    <input type="text" class="form-control bot" placeholder="닉네임" required>
-    <button type="submit" class="btn btn-lg btn-primary btn-block">로그인</button>
+    {% csrf_token %}
+    <input type="email" class="form-control top" name="email" placeholder="이메일 주소" required autofocus>
+    <input type="password" class="form-control mid" name="password" placeholder="비밀번호" required>
+    <input type="password" class="form-control mid" name="password_re" placeholder="비밀번호 확인" required>
+    <input type="text" class="form-control bot" name="nickname" placeholder="닉네임" required>
+    <button type="submit" class="btn btn- btn-primary btn-block">회원가입</button>
+    <a href="/" class="btn btn-success btn-sm btn-block">메인으로 돌아가기</a>
 </form>
 </body>
 </html>
