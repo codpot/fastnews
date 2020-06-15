@@ -1,7 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}패스트뉴스{% endblock %}
+{% block title %}기사 작성 - 패스트뉴스{% endblock %}
 
 {% block content %}
-Hello World!
+<form action="/write/{{ debate_id }}" method="post" style="margin-top: 1.5rem;">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="iCategory">카테고리</label>
+        <select class="form-control" name="category" id="iCategory" required>
+            <option value="">== 카테고리 ==</option>
+            <option value="PO">정치</option>
+            <option value="EC">경제</option>
+            <option value="SO">사회</option>
+            <option value="LI">생활/문화</option>
+            <option value="WO">세계</option>
+            <option value="IT">IT/과학</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="iTitle">제목</label>
+        <input type="text" class="form-control" name="title" id="iTitle" required>
+    </div>
+    <div class="form-group">
+        <label for="iContent">내용</label>
+        <textarea class="form-control" name="content" id="iContent" rows="12" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">작성</button>
+</form>
 {% endblock %}

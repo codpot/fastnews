@@ -5,6 +5,12 @@ class WriteDebateForm(forms.Form):
     debate_name = forms.CharField()
 
 
+class WriteArticleForm(forms.Form):
+    category = forms.CharField()
+    title = forms.CharField()
+    content = forms.CharField()
+
+
 class SettlementForm(forms.Form):
     bank_code = forms.CharField()
     account_number = forms.CharField()

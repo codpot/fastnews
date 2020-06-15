@@ -26,9 +26,9 @@ def debates_list(request):
     return render(request, 'debates_list.html', context)
 
 
-def debates_recent(request, id):
+def debates_recent(request):
     context = {}
-    return render(request, 'debates_list.html', context)
+    return render(request, 'debates_recent.html', context)
 
 
 def debates_detail(request, id):
@@ -61,7 +61,30 @@ def write(request):
 
 
 def write_article(request, id):
-    context = {}
+    if not 'user_id' in request.session:
+        return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
+    debate = Debate.objects.filter(id=id).first()
+    if debate is None:
+        return render(request, 'alert.html', {'msg': '잘못된 토론주제입니다.'})
+    if request.method == 'POST':
+        form = forms.WriteArticleForm(request.POST)
+        if form.is_valid():
+            article = Article.objects.create(
+                category=form.cleaned_data['category'],
+                title=form.cleaned_data['title'],
+                content=form.cleaned_data['content'],
+                views=0,
+                created_at=timezone.now(),
+                debate=debate,
+                reporter_id=request.session['user_id'],
+            )
+            debate.updated_at = timezone.now()
+            debate.save()
+            return render(request, 'alert.html', {'msg': '기사가 작성되었습니다.', 'location': '/news/%s' % article.id})
+        return render(request, 'alert.html', {'msg': '입력이 잘못되었습니다.'})
+    context = {
+        'debate_id': id,
+    }
     return render(request, 'write_article.html', context)
 
 
