@@ -22,7 +22,8 @@ def news_list(request, category):
         news = news.filter(category='IT')
     news = news.order_by('-created_at')
     context = {
-        'news': news
+        'news': news,
+        'category': category,
     }
     return render(request, 'news_list.html', context)
 
@@ -222,6 +223,8 @@ def register(request):
             is_exists = User.objects.filter(email=form.cleaned_data['email'])
             if len(is_exists) != 0:
                 return render(request, 'alert.html', {'msg': '이미 사용중인 이메일 주소 입니다.'})
+            if form.cleaned_data['password'] != form.cleaned_data['password_re']:
+                return render(request, 'alert.html', {'msg': '비밀번호가 일치하지 않습니다.'})
             User.objects.create(
                 email=form.cleaned_data['email'],
                 password=make_password(form.cleaned_data['password']),

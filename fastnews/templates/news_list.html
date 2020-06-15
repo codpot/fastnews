@@ -18,7 +18,26 @@
         {% for item in news %}
             <tr>
                 <td>{{item.id}}</td>
-                <td><a href="/news/{{item.id}}">{{item.title}}</a></td>
+                <td>
+                    {% if category == 'news' %}
+                        <span class="badge badge-dark">
+                            {% if item.category == 'PO' %}
+                                정치
+                            {% elif item.category == 'EC' %}
+                                경제
+                            {% elif item.category == 'SO' %}
+                                사회
+                            {% elif item.category == 'LI' %}
+                                생활/문화
+                            {% elif item.category == 'WO' %}
+                                세계
+                            {% elif item.category == 'IT' %}
+                                IT/과학
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                    <a href="/news/{{item.id}}">{{item.title}}</a>
+                </td>
                 <td>{{item.reporter.nickname}}</td>
                 <td>{{item.created_at|date:'Y-m-d H:i:s'}}</td>
                 <td>{{item.views}}</td>
