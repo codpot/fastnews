@@ -29,7 +29,7 @@
         {% for debate in debates %}
         <tr>
             <td>{{debate.id}}</td>
-            <td>{{debate.name}}</td>
+            <td><a href="/debates/{{debate.id}}">{{debate.name}}</a></td>
             <td>{{debate.comment_cnt}}</td>
             <td>{{debate.updated_at|date:'Y-m-d H:i:s'}}</td>
             <td><a href="/write/{{debate.id}}">기사 작성</a></td>

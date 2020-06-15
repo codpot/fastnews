@@ -2,8 +2,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Article, ArticleLike, Attachment, \
-    Comment, CommentLike, Debate, Notification, Settlement, User, UserSubscribe
+from .models import Article, Comment, Debate, Settlement, User
 from . import forms
 
 
@@ -27,24 +26,14 @@ def debates_list(request):
     return render(request, 'debates_list.html', context)
 
 
-def debates_detail(request, id):
+def debates_recent(request, id):
     context = {}
     return render(request, 'debates_list.html', context)
 
 
-def notifications_list(request):
+def debates_detail(request, id):
     context = {}
-    return render(request, 'notifications_list.html', context)
-
-
-def notifications_detail(request, id):
-    context = {}
-    return render(request, 'notifications_detail.html', context)
-
-
-def likes_list(request):
-    context = {}
-    return render(request, 'likes_list.html', context)
+    return render(request, 'debates_list.html', context)
 
 
 def write(request):
@@ -71,7 +60,12 @@ def write(request):
     return render(request, 'write.html', context)
 
 
-def settlement_list(request):
+def write_article(request, id):
+    context = {}
+    return render(request, 'write_article.html', context)
+
+
+def settlement(request):
     if not 'user_id' in request.session:
         return render(request, 'alert.html', {'msg': '로그인이 필요합니다.', 'location': '/login/'})
     if request.method == 'POST':
@@ -87,7 +81,7 @@ def settlement_list(request):
     context = {
         'settlement': settlement
     }
-    return render(request, 'settlement_list.html', context)
+    return render(request, 'settlement.html', context)
 
 
 def myaccount(request):

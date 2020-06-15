@@ -108,25 +108,13 @@
                     </h6>
                     <ul class="nav flex-column mb-2">
                         <li class="nav-item">
-                            <a class="nav-link{% if request.resolver_match.url_name == "notifications_list" %} active{% endif %}" href="/notifications/">
-                            <span data-feather="bell"></span>
-                            알림
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link{% if request.resolver_match.url_name == "likes_list" %} active{% endif %}" href="/likes/">
-                            <span data-feather="thumbs-up"></span>
-                            공감 목록
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link{% if request.resolver_match.url_name == "write" %} active{% endif %}" href="/write/">
                             <span data-feather="edit-3"></span>
                             기사 작성
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{% if request.resolver_match.url_name == "settlement_list" %} active{% endif %}" href="/settlement/">
+                            <a class="nav-link{% if request.resolver_match.url_name == "settlement" %} active{% endif %}" href="/settlement/">
                             <span data-feather="dollar-sign"></span>
                             수익 정산
                             </a>

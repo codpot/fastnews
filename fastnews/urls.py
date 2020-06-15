@@ -14,13 +14,12 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
 
     url(r'^debates/$', views.debates_list, name='debates_list'),
-    url(r'^debates/recent/$', views.debates_list, name='debates_list_recent'),
+    url(r'^debates/recent/$', views.debates_recent, name='debates_recent'),
     url(r'^debates/(?P<id>[0-9]+)$', views.debates_detail, name='debates_detail'),
 
-    url(r'^notifications/$', views.notifications_list, name='notifications_list'),
-    url(r'^likes/$', views.likes_list, name='likes_list'),
     url(r'^write/$', views.write, name='write'),
-    url(r'^settlement/$', views.settlement_list, name='settlement_list'),
+    url(r'^write/(?P<id>[0-9]+)$', views.write_article, name='write_article'),
+    url(r'^settlement/$', views.settlement, name='settlement'),
     url(r'^myaccount/$', views.myaccount, name='myaccount'),
 
     url(r'^login/$', views.login, name='login'),
